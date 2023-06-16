@@ -7,6 +7,13 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-image: url(./images/4k-gd7f9e82e6_1920-min.jpg);
+  /* background-image: url(./images/beautiful-flowers-g00bc793f9_1920-min.jpg); */
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  height: 100vh;
+  color: #590042;
 }
 
 code {
