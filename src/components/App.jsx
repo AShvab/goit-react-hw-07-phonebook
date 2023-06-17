@@ -7,13 +7,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Container, Subtitle, Text, Title, Total } from './App.styled';
 import { useSelector, useDispatch } from 'react-redux';
 import { addContact, deleteContact } from '../redux/contactsSlice';
-import { getContacts, getFilter } from 'redux/selectors';
+import { selectContacts, selectFilter } from 'redux/selectors';
 import { setFilter } from 'redux/filtersSlice';
 
 const App = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
-  const filter = useSelector(getFilter);
+  const contacts = useSelector(selectContacts);
+  const filter = useSelector(selectFilter);
 
   const handleAddContact = contact => {
     const { name } = contact;
