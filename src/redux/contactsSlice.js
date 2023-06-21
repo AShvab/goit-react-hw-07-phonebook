@@ -4,7 +4,6 @@ import {
   deleteContactThunk,
   fetchContactsThunk,
 } from './operations';
-import { initialState } from './initialState';
 
 const handlePending = state => {
   state.isLoading = true;
@@ -18,7 +17,11 @@ const handleRejected = (state, { payload }) => {
 
 const contactsSlice = createSlice({
   name: 'contacts',
-  initialState,
+  initialState: {
+    contacts: [],
+    isLoading: false,
+    error: null,
+  },
 
   extraReducer: builder =>
     builder
@@ -46,6 +49,4 @@ const contactsSlice = createSlice({
       }, handleRejected),
 });
 
-
 export const contactsReducer = contactsSlice.reducer;
-
