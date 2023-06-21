@@ -1,7 +1,6 @@
 import React from 'react';
-
-import PropTypes from 'prop-types';
 import ContactListItem from 'components/ContactListItem/ContactListItem';
+import PropTypes from 'prop-types';
 
 const ContactList = ({ contacts, removeContact }) => {
   return (
@@ -35,5 +34,3 @@ ContactList.propTypes = {
 };
 
 export default ContactList;
-
-

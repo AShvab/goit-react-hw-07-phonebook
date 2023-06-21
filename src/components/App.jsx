@@ -6,18 +6,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Container, Subtitle, Text, Title, Total } from './App.styled';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  selectContacts,
-  selectError,
-  selectFilter,
-  selectIsLoading,
-} from 'redux/selectors';
+
+import { selectContacts, selectFilter, selectIsLoading } from 'redux/selectors';
+import { setFilter } from 'redux/filtersSlice';
 import {
   addContactThunk,
   deleteContactThunk,
   fetchContactsThunk,
 } from 'redux/operations';
-import { setFilter } from 'redux/filtersSlice';
 import Loader from './Loader/Loader';
 
 const App = () => {
@@ -25,15 +21,14 @@ const App = () => {
   const contacts = useSelector(selectContacts);
   const filter = useSelector(selectFilter);
   const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
 
   useEffect(() => {
     dispatch(fetchContactsThunk());
   }, [dispatch]);
 
-  const handleAddContact = contact => {
+   const handleAddContact = contact => {
     const { name } = contact;
-    if (contacts.some(item => item.name.toLowerCase() === name.toLowerCase())) {
+    if (Array.isArray(contacts) && contacts.some(item => item.name.toLowerCase() === name.toLowerCase())) {
       toast.warning(`${name} is already in contacts`);
       return;
     }
@@ -45,7 +40,8 @@ const App = () => {
   };
 
   const handleSearchContact = event => {
-    dispatch(setFilter(event.currentTarget.value));
+    const { value } = event.target;
+    dispatch(setFilter(value));
   };
 
   const getFilteredContacts = () => {
@@ -56,12 +52,12 @@ const App = () => {
       name.toLowerCase().includes(filter.toLowerCase())
     );
   };
-    const filteredContacts = getFilteredContacts();
+
+  const filteredContacts = getFilteredContacts();
 
   return (
     <Container>
       {isLoading && <Loader />}
-      {error !== null && <p>{error}</p>}
       <Title>PhoneBook</Title>
       <Form onSubmit={handleAddContact} />
       <Subtitle>Contacts</Subtitle>
