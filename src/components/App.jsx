@@ -11,9 +11,9 @@ import { setFilter } from 'redux/filtersSlice';
 import { addContact, deleteContact, fetchContacts } from 'redux/operations';
 import {
   selectContacts,
-  selectError,
+ 
   selectFilter,
-  selectIsLoading,
+
 } from 'redux/selectors';
 
 
