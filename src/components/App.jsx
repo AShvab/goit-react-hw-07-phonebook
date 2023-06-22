@@ -4,39 +4,39 @@ import ContactList from './ContactList/ContactList';
 import SearchContact from './SearchContact';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Container, Subtitle, Text, Title, Total } from './App.styled';
+import { Container, Subtitle, Title, Total } from './App.styled';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { selectContacts, selectFilter, selectIsLoading } from 'redux/selectors';
 import { setFilter } from 'redux/filtersSlice';
+import { addContact, deleteContact, fetchContacts } from 'redux/operations';
 import {
-  addContactThunk,
-  deleteContactThunk,
-  fetchContactsThunk,
-} from 'redux/operations';
-import Loader from './Loader/Loader';
+  selectContacts,
+  selectError,
+  selectFilter,
+  selectIsLoading,
+} from 'redux/selectors';
+import { nanoid } from '@reduxjs/toolkit';
 
 const App = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
   const filter = useSelector(selectFilter);
-  const isLoading = useSelector(selectIsLoading);
 
   useEffect(() => {
-    dispatch(fetchContactsThunk());
+    dispatch(fetchContacts());
   }, [dispatch]);
 
-   const handleAddContact = contact => {
+  const handleAddContact = contact => {
     const { name } = contact;
-    if (Array.isArray(contacts) && contacts.some(item => item.name.toLowerCase() === name.toLowerCase())) {
+    if (contacts.some(item => item.name.toLowerCase() === name.toLowerCase())) {
       toast.warning(`${name} is already in contacts`);
       return;
     }
-    dispatch(addContactThunk(contact));
+    dispatch(addContact(contact));
   };
 
   const handleRemoveContact = id => {
-    dispatch(deleteContactThunk(id));
+    dispatch(deleteContact(id));
   };
 
   const handleSearchContact = event => {
@@ -45,8 +45,8 @@ const App = () => {
   };
 
   const getFilteredContacts = () => {
-    if (!Array.isArray(contacts)) {
-      return [];
+    if (!filter) {
+      return contacts;
     }
     return contacts.filter(({ name }) =>
       name.toLowerCase().includes(filter.toLowerCase())
@@ -57,20 +57,15 @@ const App = () => {
 
   return (
     <Container>
-      {isLoading && <Loader />}
       <Title>PhoneBook</Title>
       <Form onSubmit={handleAddContact} />
       <Subtitle>Contacts</Subtitle>
       <Total>Total contacts: {filteredContacts.length}</Total>
-      <SearchContact searchContact={handleSearchContact} />
-      {filteredContacts.length > 0 ? (
-        <ContactList
-          contacts={filteredContacts}
-          removeContact={handleRemoveContact}
-        />
-      ) : (
-        <Text>Contact list is empty</Text>
-      )}
+      <SearchContact filter={filter} searchContact={handleSearchContact} />
+      <ContactList
+        contacts={filteredContacts}
+        removeContact={handleRemoveContact}
+      />
       <ToastContainer autoClose={2000} />
     </Container>
   );

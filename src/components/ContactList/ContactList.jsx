@@ -1,12 +1,12 @@
 import React from 'react';
 import ContactListItem from 'components/ContactListItem/ContactListItem';
 import PropTypes from 'prop-types';
+import { Text } from './ContactList.styled';
 
 const ContactList = ({ contacts, removeContact }) => {
   return (
     <ul>
-      {Array.isArray(contacts) &&
-        contacts.length &&
+      {contacts && contacts.length > 0 ? (
         contacts.map(contact => {
           return (
             <ContactListItem
@@ -17,7 +17,10 @@ const ContactList = ({ contacts, removeContact }) => {
               removeContact={removeContact}
             />
           );
-        })}
+        })
+      ) : (
+        <Text>Contact list is empty</Text>
+      )}
     </ul>
   );
 };
