@@ -15,7 +15,7 @@ import {
   selectFilter,
   selectIsLoading,
 } from 'redux/selectors';
-import { nanoid } from '@reduxjs/toolkit';
+
 
 const App = () => {
   const dispatch = useDispatch();
