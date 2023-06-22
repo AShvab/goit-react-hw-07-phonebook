@@ -11,16 +11,18 @@ import { setFilter } from 'redux/filtersSlice';
 import { addContact, deleteContact, fetchContacts } from 'redux/operations';
 import {
   selectContacts,
- 
+  selectError,
   selectFilter,
-
+  selectIsLoading,
 } from 'redux/selectors';
-
+import Loader from './Loader/Loader';
 
 const App = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
   const filter = useSelector(selectFilter);
+  const error = useSelector(selectError);
+  const isLoading = useSelector(selectIsLoading);
 
   useEffect(() => {
     dispatch(fetchContacts());
@@ -57,9 +59,12 @@ const App = () => {
 
   return (
     <Container>
+
       <Title>PhoneBook</Title>
       <Form onSubmit={handleAddContact} />
       <Subtitle>Contacts</Subtitle>
+      {isLoading && <Loader />}
+      {error && <p>{error}</p>}
       <Total>Total contacts: {filteredContacts.length}</Total>
       <SearchContact filter={filter} searchContact={handleSearchContact} />
       <ContactList
